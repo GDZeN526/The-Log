@@ -241,12 +241,11 @@ setTimeout(startEvent,60000)
 
 /* EVENT */
 function startEvent(){
+document.getElementById("bgm2").pause()
+document.getElementById("bgm2").stop()
 document.body.style.background="black"
 document.body.style.color="white"
 document.getElementById("container").style.display="none"
-bgm2.pause()
-document.getElementById("bgm2").pause()
-document.getElementById("bgm2").stop()
 const screen=document.getElementById("eventScreen")
 screen.style.display="flex"
 let lines=[
