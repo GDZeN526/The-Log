@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Log System</title>
+
+<style>
+body{
+margin:0;
+background:black;
+color:white;
+font-family:monospace;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+filter:blur(1.2px); /* subtle blur */
+}
+
+/* MAIN UI */
+#container{
+width:80%;
+max-width:900px;
+text-align:center;
+}
+
+/* BUTTON AREA */
+.controls{
+margin-bottom:25px;
+}
+
+/* BUTTON STYLE */
+button{
+background:black;
+color:white;
+border:1px solid white;
+padding:6px 12px;
+margin:5px;
+cursor:pointer;
+font-size:12px;
+}
+
+button:hover{
+background:white;
+color:black;
+}
+
+/* LOG TEXT */
+#text{
+text-align:left;
+font-size:14px;
+line-height:2.4;      /* prevent overlapping */
+white-space:pre-wrap;
+word-wrap:break-word;
+transform:scaleY(2);  /* stretch vertically */
+transform-origin:top;
+margin-top:30px;
+}
+
+/* SECRET BUTTON */
+#secret{
+position:fixed;
+bottom:120px;
+right:40px;
+width:160px;
+height:160px;
+opacity:0;
+cursor:pointer;
+}
+
+/* EVENT SCREEN */
+#eventScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+font-size:24px;
+text-align:center;
+}
+
+/* TEXT FADE */
+.fadeText{
+animation:fadeText 5s forwards;
+}
+
+@keyframes fadeText{
+0%{opacity:0}
+20%{opacity:1}
+80%{opacity:1}
+100%{opacity:0}
+}
+
+/* IMAGE FADE */
+.fadeImage{
+animation:fadeImage 1s forwards;
+}
+
+@keyframes fadeImage{
+from{opacity:0}
+to{opacity:1}
+}
+
+/* RED FLASH */
+.redflash{
+animation:redflash .25s infinite;
+}
+
+@keyframes redflash{
+0%{background:black}
+50%{background:red}
+100%{background:black}
+}
+
+img{
+max-width:90%;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="container">
+
+<div class="controls">
+<button onclick="setMode('encode')">ENCODE</button>
+<button onclick="setMode('decode')">DECODE</button>
+</div>
+
+<div class="controls">
+<button onclick="showLog(1)">LOG 1</button>
+<button onclick="showLog(2)">LOG 2</button>
+<button onclick="showLog(3)">LOG 3</button>
+</div>
+
+<div id="text"></div>
+
+</div>
+
+<div id="secret"></div>
+<div id="eventScreen"></div>
+
+<audio id="bgm1" src="BGMA1.mp3" loop></audio>
+<audio id="bgm2" src="BGMA2.mp3"></audio>
+<audio id="va1" src="VA1.mp3"></audio>
+<audio id="va2" src="VA2.mp3"></audio>
+
+<script>
+/* VISIT COUNTER */
+let visits = localStorage.getItem("siteVisits")
+if(!visits){
+visits = 1
+}else{
+visits = parseInt(visits) + 1
+}
+localStorage.setItem("siteVisits", visits)
+
+/* MODE */
+let mode="encode"
+let currentLog=1
+
+/* LOG DATA */
+const encodedLogs=[
+`76 111 103 32 35 49 10 73 32 116 104 105 110 107 32 115 111 109 101 111 110 101 44 32 111 114 32 115 111 109 101 116 104 105 110 103 32 102 111 108 108 111 119 115 32 109 101 32 104 111 109 101`,
+`TG9nICMyCkkga25ldyBpdCwgSSBmdWNraW5nIGtuZXcgaXQuIEl0J3MgaGVyZSwgSSdtIG5vdyBpbiBteSByb29tLCBzY2FyZWQsIHdpdGggbm8gcHJvdGVjdGlvbiwgSSBkb24ndCBrbm93IGlmIGl0IGNhbiB1bmxvY2sgYSBkb29yLCBidXQgZm9yIG5vdywgSSdtIG5vdCBzYWZlLiBKdXN0IGluIGNhc2Ugc29tZXRoaW5nIGhhcHBlbnMgSSdtIGdvbm5hIGVuY29kZSB0aGlzIG1lc3NhZ2Uu`,
+`Lg#
+ a' ev,Icntd ntig tsbe as n ooecm ohl e tsbe AS htde twn,Idnthv NTIGo 3Icntlae  a' oayhn.I' endy,adn n oet epm,i' enDY.Wa osi at  o' aeAYHN.`
+]
+
+let decodedLogs=[
+`Log #1
+
+I think someone, or something follows me home.
+I don't know what it is, but I'm scared.`,
+
+`Log #2
+
+I knew it. I fucking knew it.
+
+It's here, I'm now in my room, scared, with no protection.
+I don't know if it can unlock a door, but for now I'm not safe.`,
+
+`Log #3
+
+I can't leave.
+I can't do anything.
+
+It's been days and no one has come to help me.
+It's been DAYS.
+
+What does it want?
+
+I don't have ANYTHING.`
+]
+
+/* CHANGE LOG 3 ON SECOND VISIT */
+if(visits === 2){
+decodedLogs[2] = `Log #3
+
+You shouldn't have come back.`
+}
+
+/* FUNCTIONS */
+function setMode(m){
+mode=m
+updateText()
+}
+
+function showLog(n){
+currentLog=n
+updateText()
+}
+
+function updateText(){
+document.getElementById("text").textContent =
+mode==="encode" ? encodedLogs[currentLog-1] : decodedLogs[currentLog-1]
+}
+
+updateText()
+
+/* MUSIC */
+const bgm1=document.getElementById("bgm1")
+bgm1.volume=0.7
+bgm1.play()
+
+/* SECRET */
+document.getElementById("secret").onclick=function(){
+document.body.style.background="white"
+document.body.style.color="black"
+document.getElementById("text").textContent="557875"
+bgm1.pause()
+document.getElementById("bgm2").play()
+setTimeout(startEvent,60000)
+}
+
+/* EVENT */
+function startEvent(){
+document.body.style.background="black"
+document.getElementById("container").style.display="none"
+const screen=document.getElementById("eventScreen")
+screen.style.display="flex"
+let lines=[
+"Congratulations!",
+"You found my secret Website!!",
+"Sadly, He's not alive. I took his life.",
+"You're next."
+]
+let i=0
+function nextLine(){
+if(i>=lines.length){
+document.getElementById("va1").play()
+setTimeout(showImage1,6000)
+return
+}
+screen.innerHTML="<div class='fadeText'>"+lines[i]+"</div>"
+setTimeout(()=>{
+i++
+nextLine()
+},5000)
+}
+nextLine()
+}
+
+/* IMAGE1 */
+function showImage1(){
+const screen=document.getElementById("eventScreen")
+screen.innerHTML="<img src='Image1.png' class='fadeImage'>"
+setTimeout(showImage2,5000)
+}
+
+/* IMAGE2 */
+function showImage2(){
+const screen=document.getElementById("eventScreen")
+screen.innerHTML="<img id='img2' src='Image2.png'>"
+document.getElementById("va2").play()
+document.body.classList.add("redflash")
+let img=document.getElementById("img2")
+let scale=1
+setInterval(()=>{
+scale+=0.05
+img.style.transform="scaleY("+scale+")"
+},50)
+setTimeout(()=>{
+document.body.innerHTML=""
+},120000)
+}
+</script>
+
+</body>
+</html>
