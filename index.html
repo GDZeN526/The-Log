@@ -166,6 +166,7 @@ let mode="encode"
 let currentLog=1
 
 /* LOG DATA */
+document.getElementById("bgm1").play()
 const encodedLogs=[
 `76 111 103 32 35 49 10 73 32 116 104 105 110 107 32 115 111 109 101 111 110 101 44 32 111 114 32 115 111 109 101 116 104 105 110 103 32 102 111 108 108 111 119 115 32 109 101 32 104 111 109 101`,
 `TG9nICMyCkkga25ldyBpdCwgSSBmdWNraW5nIGtuZXcgaXQuIEl0J3MgaGVyZSwgSSdtIG5vdyBpbiBteSByb29tLCBzY2FyZWQsIHdpdGggbm8gcHJvdGVjdGlvbiwgSSBkb24ndCBrbm93IGlmIGl0IGNhbiB1bmxvY2sgYSBkb29yLCBidXQgZm9yIG5vdywgSSdtIG5vdCBzYWZlLiBKdXN0IGluIGNhc2Ugc29tZXRoaW5nIGhhcHBlbnMgSSdtIGdvbm5hIGVuY29kZSB0aGlzIG1lc3NhZ2Uu`,
@@ -244,6 +245,7 @@ function startEvent(){
 document.body.style.background="black"
 document.body.style.color="white"
 document.getElementById("container").style.display="none"
+bgm2.pause()
 const screen=document.getElementById("eventScreen")
 screen.style.display="flex"
 let lines=[
