@@ -147,7 +147,7 @@ max-width:90%;
 <div id="eventScreen"></div>
 
 <audio id="bgm1" src="BGMA1.mp3" loop></audio>
-<audio id="bgm2" src="BGMA2.mp3" loop></audio>
+<audio id="bgm2" src="BGMA2.mp3"></audio>
 <audio id="va1" src="VA1.mp3"></audio>
 <audio id="va2" src="VA2.mp3" loop></audio>
 
@@ -241,8 +241,6 @@ setTimeout(startEvent,60000)
 
 /* EVENT */
 function startEvent(){
-document.getElementById("bgm2").pause()
-document.getElementById("bgm2").stop()
 document.body.style.background="black"
 document.body.style.color="white"
 document.getElementById("container").style.display="none"
